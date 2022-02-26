@@ -1,0 +1,2 @@
+# SushiTopFriends
+SushiTopMarketing社が感謝を伝えるためのリポジトリです。
