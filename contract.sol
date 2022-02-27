@@ -10,7 +10,8 @@ contract SushiTopFriendsNft is  ERC721URIStorage  , ERC721Enumerable{
     uint nftid = 1;
     
     string currentURI = "http://arweave.net/fLk2kQ8xbYjHapkkNxHT9a66rUmrHHNnSyQuUXWTMTY";
-    address  stmsenderaddress= 0x5da89c55fdEd626B5F1e8446F00d52679Aa32cbA;
+    //address  stmsenderaddress= 0x5da89c55fdEd626B5F1e8446F00d52679Aa32cbA;
+    mapping (address => bool) public stmsenderaddress;
     
     event Mint();
     event SetTokenURI( uint256 , string );
@@ -27,6 +28,11 @@ contract SushiTopFriendsNft is  ERC721URIStorage  , ERC721Enumerable{
         currentURI = _uri;
     }
 
+    function addstmsenderaddress(address _sender) public {
+        require( _msgSender() == owner );
+        stmsenderaddress[_sender] = true;
+    }
+
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
         override(ERC721 , ERC721Enumerable)
@@ -34,10 +40,10 @@ contract SushiTopFriendsNft is  ERC721URIStorage  , ERC721Enumerable{
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
-    function setStmSender(address _newSTMsender) public {
-        require(_msgSender() == owner);
-        stmsenderaddress = _newSTMsender;
-    }
+    // function setStmSender(address _newSTMsender) public {
+    //     require(_msgSender() == owner);
+    //     stmsenderaddress = _newSTMsender;
+    // }
 
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
@@ -72,27 +78,29 @@ contract SushiTopFriendsNft is  ERC721URIStorage  , ERC721Enumerable{
     }
 
     function friendsNftPresent(address _userAddress) public {
-        require( _msgSender() == stmsenderaddress );
-        require(balanceOf(_userAddress)==0);
+        require( stmsenderaddress[_msgSender()] == true );
+        //require(balanceOf(_userAddress)==0);
         _safeMint( _userAddress , nftid);
         emit Mint();
         nftid++;
     }
 
-    function isApprovedForAll(
-        address _owner,
-        address _operator
-    ) public override view returns (bool isOperator) {
-        if (_operator == owner) {
-            return true;
-        }
+    // function isApprovedForAll(
+    //     address _owner,
+    //     address _operator
+    // ) public override view returns (bool isOperator) {
+    //     if (_operator == owner) {
+    //         return true;
+    //     }
         
-        // otherwise, use the default ERC721.isApprovedForAll()
-        return ERC721.isApprovedForAll(_owner, _operator);
-    }
+    //     // otherwise, use the default ERC721.isApprovedForAll()
+    //     return ERC721.isApprovedForAll(_owner, _operator);
+    // }
 
     constructor() ERC721("SushiTopFriendsNft", "STN") {
         owner = _msgSender();
+        stmsenderaddress[_msgSender()] = true;
+        stmsenderaddress[0x5da89c55fdEd626B5F1e8446F00d52679Aa32cbA] = true;
     } 
     
 } 
