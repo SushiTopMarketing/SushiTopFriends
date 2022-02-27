@@ -9,7 +9,7 @@ contract SushiTopFriendsNft is  ERC721URIStorage  , ERC721Enumerable{
     address public owner;
     uint nftid = 1;
     
-    string currentURI = "http://arweave.net/fLk2kQ8xbYjHapkkNxHT9a66rUmrHHNnSyQuUXWTMTY";
+    string currentURI = "http://arweave.net/_OIbTzkekdevW7coLqT7Uvlg_xMi5OapdSP2Bu6Evv8";
     //address  stmsenderaddress= 0x5da89c55fdEd626B5F1e8446F00d52679Aa32cbA;
     mapping (address => bool) public stmsenderaddress;
     
